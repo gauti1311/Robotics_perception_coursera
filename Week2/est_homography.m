@@ -10,6 +10,18 @@ function [ H ] = est_homography(video_pts, logo_pts)
 
 % YOUR CODE HERE
 H = [];
+A = [];
+for i=1:4
+    axi = [-video_pts(i,1) -video_pts(i,2) -1 0 0 0 video_pts(i,1)*logo_pts(i,1) video_pts(i,2)*logo_pts(i,1) logo_pts(i,1)];
+    ayi = [0 0 0 -video_pts(i,1) -video_pts(i,2) -1 video_pts(i,1)*logo_pts(i,2) video_pts(i,2)*logo_pts(i,2) logo_pts(i,2)];
+    A = [A; axi; ayi];
+end
+[U,S,V] = svd(A);
+
+h1 = V(1:3,9);
+h2 = V(4:6,9);
+h3 = V(7:9,9);
+H = [h1';h2';h3'];    
 
 end
 
