@@ -7,5 +7,9 @@ function E = EssentialMatrixFromFundamentalMatrix(F,K)
 % Outputs:
 %     E - size (3 x 3) Essential matrix with singular values (1,1,0)
 
-
+E = (K')*F*K;
+[U,D,V] = svd(E);
+E = U*[1,0,0;0,1,0;0,0,0]*V';
+E = E/norm(E);
+end
 
