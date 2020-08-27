@@ -14,7 +14,40 @@ function [C, R] = LinearPnP(X, x, K)
 % more numeically unstable, and thus it is better to calibrate the x values
 % before the computation of P then extract R and t directly
 
+N = size(X,1);
+X = [X,ones(N,1)];
+x = [x,ones(N,1)];
+x = (K\x')';
 
+A = zeros(2*N,12);
+
+
+for i = 1:N
+    A(i*2-1,1:4) = -X(i,:);
+    A(i*2-1,9:12) = x(i,1)*X(i,:);
+    A(i*2,5:8) = -X(i,:);
+    A(i*2,9:12) = x(i,2)*X(i,:);
+end
+
+[~,~,V] = svd(A);
+
+P = reshape(V(:,12),4,3)';
+Rw = P(:,1:3);
+t = P(:,4);
+
+[U,D,V] = svd(Rw);
+
+if det(U*V') >0
+    R = U*V';
+    t = t/D(1);
+elseif det(U*V') <0
+    R = -U*V';
+    t = -t/D(1);
+end
+
+C = -(R')*t;
+
+end
 
 
 
