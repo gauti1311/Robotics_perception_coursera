@@ -13,3 +13,4 @@ Visualizing Results : To check the results of tracker, run the generate_klt_imag
                       To save the projected images to file, call: save_images(generated_imgs)
 
 Week 4: Structure from motion takes a set of images and compute camera poses and 3D point cloud. 
+                   To visualize run run_sfm.m
